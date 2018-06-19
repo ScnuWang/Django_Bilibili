@@ -56,7 +56,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
-        'APP_DIRS': True,
+        'APP_DIRS': True,# 表示可以读取应用里面的模板文件
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',

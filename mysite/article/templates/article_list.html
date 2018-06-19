@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文章列表</title>
+</head>
+<body>
+
+    {% for article in article_list%}
+        <!--注意：这里的路径是从调用当前模板的方法路径开始的-->
+    <h2><a href="{{article.id}}">{{article.tittle}}</a></h2>
+    {% endfor %}
+</body>
+</html>
