@@ -7,8 +7,12 @@
 <body>
 
     {% for article in article_list%}
-        <!--注意：这里的路径是从调用当前模板的方法路径开始的-->
-    <h2><a href="{{article.id}}">{{article.tittle}}</a></h2>
+        <!--注意：使用相对路径：这里的路径是从调用当前模板的方法路径开始的-->
+    <!--<h2><a href="{{article.id}}">{{article.tittle}}</a></h2>-->
+        <!--这里使用urls.py文件下的路径-->
+    <!--<h2><a href="/article/{{article.id}}">{{article.tittle}}</a></h2>-->
+        <!--这里使用urls.py文件下的路径的别名,格式：{% url '路径别名' 路径参数 %}            -->
+    <h2><a href="{% url 'article_detail' article.id %}">{{article.tittle}}</a></h2>
     {% endfor %}
 </body>
 </html>
