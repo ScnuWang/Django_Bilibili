@@ -19,7 +19,7 @@ def article_detail(request,article_id): # 虽然这个request 没有使用，但
     #     raise Http404("文章不存在！")
 
 def article_list(request):
-    article_list = get_list_or_404(Article)
+    article_list = get_list_or_404(Article,is_delete = False)# 自带过滤器，is_delete是模型字段
     context = {}
     context['article_list'] = article_list
     return render_to_response('article_list.html', context)

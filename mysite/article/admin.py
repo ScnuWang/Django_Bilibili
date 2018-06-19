@@ -4,7 +4,7 @@ from .models import Article
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     # 设置admin平台显示模式的内容
-    list_display = ('id','tittle','context')
+    list_display = ('id','tittle','context','author','is_delete','read_num','created_time','last_update_time')
     # 排序：倒序在id 前面加负号
     ordering = ('id',)
 
