@@ -1,11 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>博客列表</title>
-</head>
-<body>
-    <h1>个人博客网站</h1>
+{# 继承base.html 模板 #}
+{% extends 'base.html' %}
+
+{# 页面标题 #}
+{% block tittle %}
+    首页
+{% endblock %}
+
+{# 页面内容 #}
+{% block content %}
+
+    <h1>首页</h1>
 
     <b>小主已发表了{{ blogs|length }}篇博客</b>
 
@@ -25,5 +29,4 @@
         <p>-- 小主，催更人带着杀猪刀来了 --</p>
     {% endfor %}
 
-</body>
-</html>
+{% endblock %}

@@ -1,11 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ blogtype.typename }}</title>
-</head>
-<body>
-<h1><a href="{% url 'home' %}">个人博客网站</a></h1>
+{# 继承base.html 模板 #}
+{% extends 'base.html' %}
+
+{# 页面标题 #}
+{% block tittle %}
+    {{ blogtype.typename }}
+{% endblock %}
+
+{# 页面内容 #}
+{% block content %}
+
+    <h1><a href="{% url 'home' %}">首页</a></h1>
+
     {% for blog in blogs %}
         {# 使用名称以后，防止地址变动时必须要跟着变,使用Pycharm设置添加支持Django,以下内容都有提示 #}
        <h2><a href="{% url 'blog_detail' blog.pk %}">{{ blog.tittle }}</a></h2>
@@ -14,9 +19,8 @@
             发表时间：{{ blog.created_time }}
             文章分类：<a href="{% url 'blog_with_type' blog.blogtype.pk %}">{{ blog.blogtype }}</a>
         </div>
-
         {# 长文本截取:建议大家这里truncatechars改用truncatechars_html，因为truncatechars可能会有因html截取不全导致html错乱问题       #}
         <p>{{ blog.content|truncatechars:50 }}</p>
     {% endfor %}
-</body>
-</html>
+
+{% endblock %}
