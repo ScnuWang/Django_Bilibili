@@ -10,9 +10,10 @@
 {% block head_extand %}
     <link rel="stylesheet" href="{% static 'home.css' %}">
 {% endblock %}
+{# 设置导航栏激活效果 #}
+{% block nav_home_active %}active{% endblock %}
 {# 页面内容 #}
 {% block content %}
-
     <p class="home-content">欢迎访问！！！</p>
 
 {% endblock %}

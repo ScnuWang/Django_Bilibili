@@ -3,6 +3,10 @@
     margin: 0;
     padding: 0;
 }
+/* 强制使用本样式*/
+body{
+    margin-top: 80px!important;
+}
 /*导航样式*/
 div.nav{
     background-color: #24292e;
