@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>博客列表</title>
+</head>
+<body>
+    <h1>个人博客网站</h1>
+
+    <b>小主已发表了{{ blogs|length }}篇博客</b>
+
+    {% for blog in blogs %}
+        {# 使用名称以后，防止地址变动时必须要跟着变,使用Pycharm设置添加支持Django,以下内容都有提示 #}
+       <h2><a href="{% url 'blog_detail' blog.pk %}">{{ blog.tittle }}</a></h2>
+         <div>
+            作者：{{ blog.author }}
+            发表时间：{{ blog.created_time }}
+            文章分类：<a href="{% url 'blog_with_type' blog.blogtype.pk %}">{{ blog.blogtype }}</a>
+        </div>
+
+        {# 长文本截取:建议大家这里truncatechars改用truncatechars_html，因为truncatechars可能会有因html截取不全导致html错乱问题       #}
+        <p>{{ blog.content|truncatechars:50 }}</p>
+     <!--如果使用get_list_or_404（Blog）查询，则会报错 -->
+    {% empty %}
+        <p>-- 小主，催更人带着杀猪刀来了 --</p>
+    {% endfor %}
+
+</body>
+</html>

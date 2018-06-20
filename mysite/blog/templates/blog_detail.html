@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>博客详情</title>
+</head>
+<body>
+    <h1><a href="{% url 'home' %}">个人博客网站</a></h1>
+    <h2>{{ blog.tittle }}</h2>
+     <div>
+            作者：{{ blog.author }}
+            发表时间：{{ blog.created_time }}
+            文章分类：<a href="{% url 'blog_with_type' blog.blogtype_id %}">{{ blog.blogtype }}</a>
+     </div>
+    <hr>
+    {{ blog.content }}
+</body>
+</html>
