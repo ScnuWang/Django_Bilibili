@@ -17,11 +17,11 @@ from django.contrib import admin
 from django.urls import path,include
 # 同一个目录，引用用.代替
 from . import views
-from blog.views import blog_list
+from .views import home
 # 2.x 使用的path,正则表达式使用re_path;
 # 1.x 使用的版本是url，
 urlpatterns = [
-	path('',blog_list,name='home'),
+	path('',home,name='home'),
     path('admin/', admin.site.urls),
 	# path('article/',include('article.urls')),
 	path('blog/',include('blog.urls')),

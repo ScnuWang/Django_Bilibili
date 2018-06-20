@@ -9,10 +9,6 @@
 {# 页面内容 #}
 {% block content %}
 
-    <h1>首页</h1>
-
-    <b>小主已发表了{{ blogs|length }}篇博客</b>
-
     {% for blog in blogs %}
         {# 使用名称以后，防止地址变动时必须要跟着变,使用Pycharm设置添加支持Django,以下内容都有提示 #}
        <h2><a href="{% url 'blog_detail' blog.pk %}">{{ blog.tittle }}</a></h2>

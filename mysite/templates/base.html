@@ -5,6 +5,12 @@
     <title>{% block tittle %}{% endblock %}</title>
 </head>
 <body>
+    <h1><a href="{% url 'home' %}">个人博客网站</a></h1>
+    <div>
+        <a href="/">首页</a>
+        <a href="{% url 'blog_list' %}">博客</a>
+    </div>
+    <hr>
     {% block content %}{% endblock %}
 </body>
 </html>

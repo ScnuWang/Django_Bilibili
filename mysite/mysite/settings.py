@@ -56,7 +56,9 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR,'templates') # 路径拼接；配置全局通用模板路径
+        ],
         'APP_DIRS': True,# 表示可以读取应用里面的模板文件
         'OPTIONS': {
             'context_processors': [
