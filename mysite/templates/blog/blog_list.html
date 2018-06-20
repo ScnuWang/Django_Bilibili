@@ -1,6 +1,9 @@
 {# 继承base.html 模板 #}
 {% extends 'base.html' %}
-
+{% load staticfiles %}
+{% block head_extand %}
+    <link rel="stylesheet" href="{% static 'blog.css' %}">
+{% endblock %}
 {# 页面标题 #}
 {% block tittle %}
     首页
@@ -9,21 +12,52 @@
 {% block nav_blog_active %}active{% endblock %}
 {# 页面内容 #}
 {% block content %}
-
-    {% for blog in blogs %}
-        {# 使用名称以后，防止地址变动时必须要跟着变,使用Pycharm设置添加支持Django,以下内容都有提示 #}
-       <h2><a href="{% url 'blog_detail' blog.pk %}">{{ blog.tittle }}</a></h2>
-         <div>
-            作者：{{ blog.author }}
-            发表时间：{{ blog.created_time }}
-            文章分类：<a href="{% url 'blog_with_type' blog.blogtype.pk %}">{{ blog.blogtype }}</a>
+    <div class="container">
+        <div class="row">
+{#   两个内部组件长度为12         #}
+            <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">{% block blog_list_tittle %}博客列表(共有博文{{ blogs|length }}篇){% endblock %}</h3>
+                  </div>
+                  <div class="panel-body">
+                        {% for blog in blogs %}
+                            <div class="blog">
+                                {# 使用名称以后，防止地址变动时必须要跟着变,使用Pycharm设置添加支持Django,以下内容都有提示 #}
+                                <h3><a href="{% url 'blog_detail' blog.pk %}">{{ blog.tittle }}</a></h3>
+                                <p class="blog-info">
+                                  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>：{{ blog.author }}
+                                  <span class="glyphicon glyphicon-time" aria-hidden="true"></span>：{{ blog.created_time|date:"Y-m-d" }}
+                                  <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>：<a href="{% url 'blog_with_type' blog.blogtype.pk %}">{{ blog.blogtype }}</a>
+                                </p>
+                                {# 长文本截取:建议大家这里truncatechars改用truncatechars_html，因为truncatechars可能会有因html截取不全导致html错乱问题       #}
+                                <p>{{ blog.content|truncatechars_html:50 }}</p>
+                            </div>
+                        {% empty %}
+                            <div class="blog">
+                                <h3>暂无博客</h3>
+                            </div>
+                        {% endfor %}
+                  </div>
+                </div>
+            </div>
+            <div class="hidden-xs col-sm-4 col-md-3 col-lg-2">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">博客分类</h3>
+                  </div>
+                  <div class="panel-body">
+                        <ul class="blog_type">
+                            {% for blogtype in blogtypes %}
+                                <li><a href="{% url 'blog_with_type' blogtype.pk %}">{{ blogtype.typename }}</a></li>
+                            {% empty %}
+                                <p>-- 暂无分类 --</p>
+                            {% endfor %}
+                        </ul>
+                  </div>
+                </div>
+            </div>
         </div>
-
-        {# 长文本截取:建议大家这里truncatechars改用truncatechars_html，因为truncatechars可能会有因html截取不全导致html错乱问题       #}
-        <p>{{ blog.content|truncatechars:50 }}</p>
-     <!--如果使用get_list_or_404（Blog）查询，则会报错 -->
-    {% empty %}
-        <p>-- 小主，催更人带着杀猪刀来了 --</p>
-    {% endfor %}
+    </div>
 
 {% endblock %}

@@ -1,27 +1,13 @@
 {# 继承base.html 模板 #}
-{% extends 'base.html' %}
+{% extends 'blog/blog_list.html' %}
 
 {# 页面标题 #}
 {% block tittle %}
     {{ blogtype.typename }}
 {% endblock %}
 
-{# 设置导航栏激活效果 #}
-{% block nav_blog_active %}active{% endblock %}
-
 {# 页面内容 #}
-{% block content %}
-
-    {% for blog in blogs %}
-        {# 使用名称以后，防止地址变动时必须要跟着变,使用Pycharm设置添加支持Django,以下内容都有提示 #}
-       <h2><a href="{% url 'blog_detail' blog.pk %}">{{ blog.tittle }}</a></h2>
-         <div>
-            作者：{{ blog.author }}
-            发表时间：{{ blog.created_time }}
-            文章分类：<a href="{% url 'blog_with_type' blog.blogtype.pk %}">{{ blog.blogtype }}</a>
-        </div>
-        {# 长文本截取:建议大家这里truncatechars改用truncatechars_html，因为truncatechars可能会有因html截取不全导致html错乱问题       #}
-        <p>{{ blog.content|truncatechars:50 }}</p>
-    {% endfor %}
-
+{% block blog_list_tittle %}
+    分类：{{ blogtype.typename }}（共有博客{{ blogs|length }}篇）
+    <a href="{% url 'blog_list' %}">查看全部博客</a>
 {% endblock %}

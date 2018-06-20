@@ -1,6 +1,9 @@
 {# 继承base.html 模板 #}
 {% extends 'base.html' %}
-
+{% load staticfiles %}
+{% block head_extand %}
+    <link rel="stylesheet" href="{% static 'blog.css' %}">
+{% endblock %}
 {# 页面标题 #}
 {% block tittle %}
     {{ blog.tittle }}
@@ -9,15 +12,22 @@
 {% block nav_blog_active %}active{% endblock %}
 {# 页面内容 #}
 {% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+                {# 使用名称以后，防止地址变动时必须要跟着变,使用Pycharm设置添加支持Django,以下内容都有提示 #}
+                <h3>{{ blog.tittle }}</h3>
+                <ul class="blog-info-description">
+                  <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span>：{{ blog.author }}</li>
+                  <li><span class="glyphicon glyphicon-time" aria-hidden="true"></span>：{{ blog.created_time|date:"Y-m-d" }}</li>
+                  <li><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>：<a href="{% url 'blog_with_type' blog.blogtype.pk %}">{{ blog.blogtype }}</a></li>
+                </ul>
+                {# 长文本截取:建议大家这里truncatechars改用truncatechars_html，因为truncatechars可能会有因html截取不全导致html错乱问题       #}
+                <div class="blog-content">{{ blog.content}}</div>
+            </div>
+        </div>
+    </div>
 
 
-    <h2>{{ blog.tittle }}</h2>
-     <div>
-            作者：{{ blog.author }}
-            发表时间：{{ blog.created_time }}
-            文章分类：<a href="{% url 'blog_with_type' blog.blogtype_id %}">{{ blog.blogtype }}</a>
-     </div>
-    <hr>
-    {{ blog.content }}
 
 {% endblock %}
