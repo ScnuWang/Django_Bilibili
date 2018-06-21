@@ -14,14 +14,15 @@
 {% block content %}
     <div class="container">
         <div class="row">
-{#   两个内部组件长度为12         #}
+        {#   两个内部组件长度为12         #}
             <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+{# 博客列表页开始 #}
                 <div class="panel panel-default">
                   <div class="panel-heading">
-                    <h3 class="panel-title">{% block blog_list_tittle %}博客列表(共有博文{{ blogs|length }}篇){% endblock %}</h3>
+                    <h3 class="panel-title">{% block blog_list_tittle %}博客列表(共有博文{{ page_of_blog.paginator.count }}篇){% endblock %}</h3>
                   </div>
                   <div class="panel-body">
-                        {% for blog in blogs %}
+                        {% for blog in page_of_blog.object_list %}
                             <div class="blog">
                                 {# 使用名称以后，防止地址变动时必须要跟着变,使用Pycharm设置添加支持Django,以下内容都有提示 #}
                                 <h3><a href="{% url 'blog_detail' blog.pk %}">{{ blog.tittle }}</a></h3>
@@ -39,6 +40,35 @@
                             </div>
                         {% endfor %}
                   </div>
+                </div>
+{# 分页栏开始 #}
+                <div>
+                    <ul class="pagination">
+{#                    上一页#}
+                        <li>
+                            {% if page_of_blog.has_previous %}
+                                <a href="?page={{ page_of_blog.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&laquo;</span>
+                            {% endif %}
+                        </li>
+{#                    全部页码#}
+                        {% for page_num in page_of_blog.paginator.page_range %}
+                            <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                        {% endfor %}
+{#                    下一页#}
+                        <li>
+                         {% if page_of_blog.has_next %}
+                                <a href="?page={{ page_of_blog.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            {% else %}
+                                <span aria-hidden="true">&raquo;</span>
+                            {% endif %}
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div class="hidden-xs col-sm-4 col-md-3 col-lg-2">
@@ -58,6 +88,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 
 {% endblock %}
