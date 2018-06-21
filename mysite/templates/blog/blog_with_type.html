@@ -8,6 +8,6 @@
 
 {# 页面内容 #}
 {% block blog_list_tittle %}
-    分类：{{ blogtype.typename }}（共有博客{{ blogs|length }}篇）
+    分类：{{ blogtype.typename }}（共有博客{{ page_of_blog.paginator.count }}篇）
     <a href="{% url 'blog_list' %}">查看全部博客</a>
 {% endblock %}
