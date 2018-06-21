@@ -55,8 +55,16 @@
                             {% endif %}
                         </li>
 {#                    全部页码#}
-                        {% for page_num in page_of_blog.paginator.page_range %}
-                            <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                        {% for page_num in page_range %}
+                            {% if page_num == page_of_blog.number %}
+                                <li class="active"><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                            {% else %}
+                                {% if page_num == '...' %}
+                                    <li><span>{{ page_num }}</span></li>
+                                {% else %}
+                                    <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                {% endif %}
+                            {% endif %}
                         {% endfor %}
 {#                    下一页#}
                         <li>
@@ -88,8 +96,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 
 {% endblock %}
