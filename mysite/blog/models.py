@@ -20,6 +20,7 @@ class Blog(models.Model):
     def __str__(self):
         return self.tittle
 
+    # 定义排序
     class Meta:
         ordering=['-created_time',]
 
