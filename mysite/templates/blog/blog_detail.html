@@ -24,6 +24,18 @@
                 </ul>
                 {# 长文本截取:建议大家这里truncatechars改用truncatechars_html，因为truncatechars可能会有因html截取不全导致html错乱问题       #}
                 <div class="blog-content">{{ blog.content}}</div>
+                <div class="blog-more">
+                    {% if previous_blog %}
+                        <p>
+                            <a href="{% url 'blog_detail' previous_blog.pk %}">上一篇博客：{{ previous_blog.tittle }}</a>
+                        </p>
+                    {% endif %}
+                    {% if next_blog %}
+                        <p>
+                            <a href="{% url 'blog_detail' next_blog.pk %}">下一篇博客：{{ next_blog.tittle }}</a>
+                        </p>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

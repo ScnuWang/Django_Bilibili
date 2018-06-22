@@ -18,3 +18,5 @@ div.blog:not(:last-child){
     border-bottom: 1px solid #eeeeee;
 }
 ```
+
+Blog.objects.filter():是函数，后面的过滤条件不能直接给不等号类似条件--->使用条件修饰符:created_time__gt，created_time__lt等

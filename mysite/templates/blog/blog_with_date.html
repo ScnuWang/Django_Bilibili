@@ -1,0 +1,13 @@
+{# 继承base.html 模板 #}
+{% extends 'blog/blog_list.html' %}
+
+{# 页面标题 #}
+{% block tittle %}
+    {{ blogtype.typename }}
+{% endblock %}
+
+{# 页面内容 #}
+{% block blog_list_tittle %}
+    日期归档：{{ blog_with_date }}
+    <a href="{% url 'blog_list' %}">查看全部博客</a>
+{% endblock %}
