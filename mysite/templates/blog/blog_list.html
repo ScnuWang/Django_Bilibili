@@ -102,9 +102,9 @@
                   <div class="panel-body">
                         <ul class="blog_type">
                             {% for blog_date in blogs_with_date %}
-                                <li><a href="{% url 'blog_with_date' blog_date.year blog_date.month %}">{{ blog_date|date:'Y年m月' }}</a></li>
+                                <li><a href="{% url 'blog_with_date' blog_date.year blog_date.month %}">{{ blog_date|date:'Y年m月' }}（{{ blog_date|length }}）</a></li>
                             {% empty %}
-                                <p>-- 暂无分类 --</p>
+                                <p>-- 暂无博客 --</p>
                             {% endfor %}
                         </ul>
                   </div>
