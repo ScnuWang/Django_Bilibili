@@ -68,17 +68,26 @@ def blog_detail(request,blog_pk):
 
     # 上一篇文章，下一篇文章，按实际排序
     blog = get_object_or_404(Blog,pk=blog_pk)
+    if not request.COOKIES.get('blog_%s_read' % blog_pk):
+        blog.read_num += 1
+        blog.save()
+
     # 当前博客的时间
     current_blog_create_time = blog.created_time
     # created_time__gt：表当前时间大的 last()：最后一条 first()；第一条
     previous_blog = Blog.objects.filter(created_time__gt=current_blog_create_time).last()
     next_blog = Blog.objects.filter(created_time__lt=current_blog_create_time).first()
+    # 当前博客
 
     context = {}
     context['previous_blog'] = previous_blog
     context['next_blog'] = next_blog
-    context['blog'] = get_object_or_404(Blog,pk=blog_pk)
-    return render_to_response("blog/blog_detail.html",context)
+    context['blog'] = blog
+
+    # 设置Cookie 用于统计阅读次数
+    response = render_to_response("blog/blog_detail.html",context)
+    response.set_cookie('blog_%s_read' % blog_pk,'True')
+    return response
 
 
 # 根据类型获取博客列表

@@ -21,6 +21,7 @@
                   <li><span class="glyphicon glyphicon-user" aria-hidden="true"></span>：{{ blog.author }}</li>
                   <li><span class="glyphicon glyphicon-time" aria-hidden="true"></span>：{{ blog.created_time|date:"Y-m-d" }}</li>
                   <li><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>：<a href="{% url 'blog_with_type' blog.blogtype.pk %}">{{ blog.blogtype }}</a></li>
+                  <li><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>：{{ blog.read_num }}</li>
                 </ul>
                 {# 长文本截取:建议大家这里truncatechars改用truncatechars_html，因为truncatechars可能会有因html截取不全导致html错乱问题       #}
                 <div class="blog-content">{{ blog.content|safe}}</div>
