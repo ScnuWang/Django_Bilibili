@@ -20,3 +20,14 @@ div.blog:not(:last-child){
 ```
 
 Blog.objects.filter():是函数，后面的过滤条件不能直接给不等号类似条件--->使用条件修饰符:created_time__gt，created_time__lt等
+
+```python
+# 给类新增属性：blog_count;for循环里面新增的属性是临时属性
+blog_count_with_type=[]
+for blog_type in BlogType.objects.all():
+    blog_type.blog_count = Blog.objects.filter(blogtype=blog_type).count()
+    blog_count_with_type.append(blog_type)
+    
+    
+blog_count_with_type = BlogType.objects.annotate(blog_count=Count('blog')) # 与上述代码等效；blog为BlogType关联的对象小写
+```

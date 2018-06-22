@@ -1,7 +1,7 @@
 from django.shortcuts import render,render_to_response,get_object_or_404,get_list_or_404
 from .models import Blog,BlogType
 from django.core.paginator import Paginator
-
+from django.db.models import Count
 # 也可以在settings.py文件里面配置
 each_page_blogs_num = 2
 
@@ -28,13 +28,30 @@ def blog_list_common_util(request,blog_list):
         page_range.append(paginator.num_pages)
 
     # 按照时间排序
-    blogs_with_date = Blog.objects.dates('created_time', 'month', order='DESC')
+    blogs_with_date = Blog.objects.dates('created_time', 'month', order='DESC') # 查询结果是日期类型
+    # 这里如果使用annotate比较麻烦，因为这里是是时间对象列表
+    blogs_with_date_dict = {}
+    for blog_date in blogs_with_date:
+        blog_count = Blog.objects.filter(created_time__year=blog_date.year, created_time__month=blog_date.month).count()
+        blogs_with_date_dict[blog_date] = blog_count
+
+
+    # 博客分类统计
+    '''
+    # 给类新增属性：blog_count
+    blog_count_with_type=[]
+    for blog_type in BlogType.objects.all():
+        blog_type.blog_count = Blog.objects.filter(blogtype=blog_type).count()
+        blog_count_with_type.append(blog_type)
+    '''
+    # blog 是关联对象的小写 blog_count属性可以自定义，但是不能和模型已有对象相同
+    blog_count_with_type = BlogType.objects.annotate(blog_count=Count('blog'))
 
     context = {}
     context['page_range'] = page_range
     context['page_of_blog'] = page_of_blog
-    context['blogtypes'] = BlogType.objects.all()
-    context['blogs_with_date'] = blogs_with_date
+    context['blogtypes'] = blog_count_with_type
+    context['blogs_with_date'] = blogs_with_date_dict
 
     return context
 
