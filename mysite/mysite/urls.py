@@ -20,10 +20,15 @@ from . import views
 from .views import home
 # 2.x 使用的path,正则表达式使用re_path;
 # 1.x 使用的版本是url，
+from  django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
 	path('',home,name='home'),
     path('admin/', admin.site.urls),
 	# path('article/',include('article.urls')),
 	path('blog/',include('blog.urls')),
+	path('ckeditor',include('ckeditor_uploader.urls'))
 ]
 
+urlpatterns += static(settings.MEDIA_URL,document_root= settings.MEDIA_ROOT)

@@ -23,7 +23,7 @@
                   <li><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>：<a href="{% url 'blog_with_type' blog.blogtype.pk %}">{{ blog.blogtype }}</a></li>
                 </ul>
                 {# 长文本截取:建议大家这里truncatechars改用truncatechars_html，因为truncatechars可能会有因html截取不全导致html错乱问题       #}
-                <div class="blog-content">{{ blog.content}}</div>
+                <div class="blog-content">{{ blog.content|safe}}</div>
                 <div class="blog-more">
                     {% if previous_blog %}
                         <p>

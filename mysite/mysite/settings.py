@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'article',
     'blog',
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 MIDDLEWARE = [
@@ -107,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
-LANGUAGE_CODE = 'zh-Hans' # 中文繁体 ： zh-Hant
+LANGUAGE_CODE = 'zh-hans' # 中文繁体 ： zh-hant
 
 TIME_ZONE = 'Asia/Shanghai' # 标准时间：UTC
 
@@ -124,3 +126,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # 静态文件目录路径
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
+
+# media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'static')
+
+# 配置CkEditor上传路径
+CKEDITOR_UPLOAD_PATH = 'upload/'

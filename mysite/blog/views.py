@@ -59,7 +59,7 @@ def blog_list_common_util(request,blog_list):
 
 # Create your views here.
 def blog_list(request):
-    blog_all_list = Blog.objects.all();
+    blog_all_list = Blog.objects.all()
     context = blog_list_common_util(request,blog_all_list)
     return render_to_response("blog/blog_list.html",context)
 
