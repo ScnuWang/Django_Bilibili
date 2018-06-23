@@ -1,5 +1,5 @@
 from django.shortcuts import render,render_to_response,get_object_or_404,get_list_or_404
-from .models import Blog,BlogType
+from .models import Blog,BlogType,ReadNum
 from django.core.paginator import Paginator
 from django.db.models import Count
 # 也可以在settings.py文件里面配置
@@ -68,9 +68,20 @@ def blog_detail(request,blog_pk):
 
     # 上一篇文章，下一篇文章，按实际排序
     blog = get_object_or_404(Blog,pk=blog_pk)
+    # 阅读量计数
+    # if not request.COOKIES.get('blog_%s_read' % blog_pk):
+    #     blog.read_num += 1
+    #     blog.save()
+    # 阅读量优化，新建一个模型记录阅读次数，与博客分开
     if not request.COOKIES.get('blog_%s_read' % blog_pk):
-        blog.read_num += 1
-        blog.save()
+        if ReadNum.objects.filter(blog=blog).count():
+            # 存在计数与博客之间的记录
+            readnum = ReadNum.objects.get(blog=blog)
+        else:
+            # 不存在
+            readnum = ReadNum(blog=blog)
+        readnum.read_num +=1
+        readnum.save()
 
     # 当前博客的时间
     current_blog_create_time = blog.created_time
@@ -83,7 +94,6 @@ def blog_detail(request,blog_pk):
     context['previous_blog'] = previous_blog
     context['next_blog'] = next_blog
     context['blog'] = blog
-
     # 设置Cookie 用于统计阅读次数
     response = render_to_response("blog/blog_detail.html",context)
     response.set_cookie('blog_%s_read' % blog_pk,'True')
