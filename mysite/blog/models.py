@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from read_statistics.models import ReadNum
 from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 from django.db.models.fields import exceptions
-
+from django.contrib.contenttypes.models import ContentType
 # 可以在shell模式下通过blogtype对象的blog_set获取blog对象列表
 class BlogType(models.Model):
     typename = models.CharField(max_length=15)
@@ -25,15 +25,12 @@ class Blog(models.Model):
         return self.tittle
     def get_read_num(self):
         try:
-            return self.readnum.read_num
+            ct = ContentType.objects.get_for_model(Blog)
+            readnum = ReadNum.objects.get(content_type=ct, object_id=self.pk)
+            return readnum.read_num
         except exceptions.ObjectDoesNotExist:
             return 0
 
     # 定义排序
     class Meta:
         ordering=['-created_time',]
-
-class ReadNum(models.Model):
-    # 这样创建之后，Blog实例对象会有个属性就是readnum,可通过shell模式查看
-    read_num = models.IntegerField(default=0)
-    blog = models.OneToOneField(Blog,on_delete=models.DO_NOTHING)

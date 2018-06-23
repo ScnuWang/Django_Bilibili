@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+# 注册顺序：Django自带应用，第三方应用，自己的应用
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,10 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'article',
-    'blog',
     'ckeditor',
     'ckeditor_uploader',
+    # 'article',
+    'blog',
+    'read_statistics',
+
 ]
 
 MIDDLEWARE = [

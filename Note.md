@@ -35,3 +35,5 @@ blog_count_with_type = BlogType.objects.annotate(blog_count=Count('blog')) # 与
 阅读次数统计方案：
 1. 根据request来统计，每次请求，阅读次数加1,统计数字不准确，例如F5刷新也算一次
 2. 根据Cookie来统计，数据相对比较准确，统计数据单一，不能统计某一个时间段的访问量,后台编辑文章的时候，如果有人访问，数据不会被记录
+3. 根据Cookie来统计，将统计次数新建一个模型ReadNum，与博客建立一对一的关系，这样在修改Blog的时候,不会影响ReadNum,反之亦然；如果有多个模块（公告，个人简介，教程等）需要引用到计数的话，那么管理起来会比较乱
+4. 使用[ContentType](https://docs.djangoproject.com/en/2.0/ref/contrib/contenttypes/)(项目里面所有注册的应用所包含的模型的相关信息都能通过使用ContentType查询出来)

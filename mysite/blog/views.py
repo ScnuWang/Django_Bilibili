@@ -1,7 +1,9 @@
 from django.shortcuts import render,render_to_response,get_object_or_404,get_list_or_404
-from .models import Blog,BlogType,ReadNum
+from .models import Blog,BlogType
 from django.core.paginator import Paginator
 from django.db.models import Count
+from read_statistics.models import ReadNum
+from django.contrib.contenttypes.models import ContentType
 # 也可以在settings.py文件里面配置
 each_page_blogs_num = 2
 
@@ -73,14 +75,24 @@ def blog_detail(request,blog_pk):
     #     blog.read_num += 1
     #     blog.save()
     # 阅读量优化，新建一个模型记录阅读次数，与博客分开
+    # if not request.COOKIES.get('blog_%s_read' % blog_pk):
+        # if ReadNum.objects.filter(blog=blog).count():
+        #     # 存在计数与博客之间的记录
+        #     readnum = ReadNum.objects.get(blog=blog)
+        # else:
+        #     # 不存在
+        #     readnum = ReadNum(blog=blog)
+        # readnum.read_num +=1
+        # readnum.save()
+
+    # 使用ContentType
     if not request.COOKIES.get('blog_%s_read' % blog_pk):
-        if ReadNum.objects.filter(blog=blog).count():
-            # 存在计数与博客之间的记录
-            readnum = ReadNum.objects.get(blog=blog)
+        ct = ContentType.objects.get_for_model(Blog)
+        if ReadNum.objects.filter(content_type=ct, object_id=blog.pk).count():
+            readnum = ReadNum.objects.get(content_type=ct, object_id=blog.pk)
         else:
-            # 不存在
-            readnum = ReadNum(blog=blog)
-        readnum.read_num +=1
+            readnum = ReadNum(content_type=ct, object_id=blog.pk)
+        readnum.read_num += 1
         readnum.save()
 
     # 当前博客的时间
