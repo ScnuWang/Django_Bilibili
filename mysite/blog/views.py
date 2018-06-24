@@ -2,8 +2,9 @@ from django.shortcuts import render,render_to_response,get_object_or_404,get_lis
 from .models import Blog,BlogType
 from django.core.paginator import Paginator
 from django.db.models import Count
-from read_statistics.models import ReadNum
+from read_statistics.models import ReadNum,ReadDetail
 from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
 # 也可以在settings.py文件里面配置
 each_page_blogs_num = 2
 
@@ -88,12 +89,26 @@ def blog_detail(request,blog_pk):
     # 使用ContentType
     if not request.COOKIES.get('blog_%s_read' % blog_pk):
         ct = ContentType.objects.get_for_model(Blog)
-        if ReadNum.objects.filter(content_type=ct, object_id=blog.pk).count():
-            readnum = ReadNum.objects.get(content_type=ct, object_id=blog.pk)
-        else:
-            readnum = ReadNum(content_type=ct, object_id=blog.pk)
+        # if ReadNum.objects.filter(content_type=ct, object_id=blog.pk).count():
+        #     readnum = ReadNum.objects.get(content_type=ct, object_id=blog.pk)
+        # else:
+        #     readnum = ReadNum(content_type=ct, object_id=blog.pk)
+
+        # 用下面这个替代上面的
+        readnum, created = ReadNum.objects.get_or_create(content_type=ct, object_id=blog.pk)
         readnum.read_num += 1
         readnum.save()
+
+        date = timezone.now().date()
+        # if ReadDetail.objects.filter(content_type=ct, object_id=blog.pk, date= date).count():
+        #     readDetail = ReadDetail.objects.get(content_type=ct, object_id=blog.pk, date= date)
+        # else:
+        #     readDetail = ReadDetail(content_type=ct, object_id=blog.pk, date= date)
+
+        readDetail, created = ReadDetail.objects.get_or_create(content_type=ct, object_id=blog.pk, date= date)
+        readDetail.read_num += 1
+        readDetail.save()
+
 
     # 当前博客的时间
     current_blog_create_time = blog.created_time

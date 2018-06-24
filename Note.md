@@ -32,6 +32,20 @@ for blog_type in BlogType.objects.all():
 blog_count_with_type = BlogType.objects.annotate(blog_count=Count('blog')) # 与上述代码等效；blog为BlogType关联的对象小写
 ```
 
+```python
+def get_seven_read_data(content_type):
+    today = timezone.now().date()
+    read_nums = []
+    for i in range(7,0,-1):
+        date = today - datetime.timedelta(days=i)
+        readDetail = ReadDetail.objects.filter(content_type=content_type,date=date)
+        result = readDetail.aggregate(read_num_sum = Sum('read_num'))
+        read_nums.append(result['read_num_sum'] or 0)
+
+    return read_nums
+```
+
+
 阅读次数统计方案：
 1. 根据request来统计，每次请求，阅读次数加1,统计数字不准确，例如F5刷新也算一次
 2. 根据Cookie来统计，数据相对比较准确，统计数据单一，不能统计某一个时间段的访问量,后台编辑文章的时候，如果有人访问，数据不会被记录

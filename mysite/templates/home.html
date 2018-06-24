@@ -8,12 +8,53 @@
 {% endblock %}
 {# css 文件#}
 {% block head_extand %}
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
     <link rel="stylesheet" href="{% static 'home.css' %}">
 {% endblock %}
 {# 设置导航栏激活效果 #}
 {% block nav_home_active %}active{% endblock %}
 {# 页面内容 #}
 {% block content %}
-    <p class="home-content">欢迎访问！！！</p>
+    <p class="home-content">
+        欢迎访问！！！
+        <div id="container" ></div>
+         <script>
+        // 图表配置
+            var options = {
+                chart: {
+                    type: 'line'                          //指定图表的类型，默认是折线图（line）
+                },
+                title: {
+                    text: '近七天阅读曲线'                 // 标题
+                },
+                xAxis: {
+                    categories: {{ dates|safe }},   // x 轴分类
+                    tickmarkPlacement:'on',
+                },
+                yAxis: {
+                    title: {
+                        text: null                // y 轴标题
+                    },
+                    labels:{enabled:false},
+                    gridLineDashStyle:'Dash'
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                series: [{                              // 数据列
+                    name: '阅读量',                        // 数据列名
+                    data: {{ sever_read_date }}                     // 数据
+                }],
+                legend:{enabled:false},
+                credits:{enabled:false},
+            };
+            // 图表初始化函数
+            var chart = Highcharts.chart('container', options);
+        </script>
+    </p>
 
 {% endblock %}
