@@ -25,7 +25,7 @@ SECRET_KEY = '7lzpt2**@x69(x=li8q74ev5ot%y+lhsn+9axz0!qbb%i_x-^9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['morem.pythonanywhere.com']
 
 
 # Application definition
@@ -126,12 +126,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# 用于为了部署搜集静态文件 python manage.py collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
 # 静态文件目录路径
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
 
 # media
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'static')
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 # 配置CkEditor上传路径
 CKEDITOR_UPLOAD_PATH = 'upload/'
