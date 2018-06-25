@@ -5,6 +5,8 @@ from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 from django.db.models.fields import exceptions
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericRelation
+from read_statistics.models import ReadDetail
 # 可以在shell模式下通过blogtype对象的blog_set获取blog对象列表
 class BlogType(models.Model):
     typename = models.CharField(max_length=15)
@@ -18,6 +20,7 @@ class Blog(models.Model):
     blogtype = models.ForeignKey(BlogType,on_delete=models.DO_NOTHING)
     author = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     content = RichTextUploadingField()
+    readDetail = GenericRelation(ReadDetail)
     created_time = models.DateTimeField(auto_now_add=True)
     last_update_time = models.DateTimeField(auto_now=True)
 

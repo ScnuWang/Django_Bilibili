@@ -17,6 +17,40 @@
 {% block content %}
     <p class="home-content">
         欢迎访问！！！
+        <div class="hot_blog">
+            <h3>今日热门点击</h3>
+            <ul>
+                {% for hot_blog_detail in hot_read_data %}
+                    <li><a href="{% url 'blog_detail' hot_blog_detail.object_id %}">{{ hot_blog_detail.content_object.tittle }}(今日阅读量：{{ hot_blog_detail.read_num }})</a></li>
+                {% empty %}
+                    今日暂无热门文章
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="hot_blog">
+                <h3>昨日热门点击</h3>
+                <ul>
+                    {% for yestoday_hot_blog_detail in yestoday_hot_read_data %}
+                        <li><a href="{% url 'blog_detail' yestoday_hot_blog_detail.object_id %}">{{ yestoday_hot_blog_detail.content_object.tittle }}(昨日阅读量：{{ yestoday_hot_blog_detail.read_num }})</a></li>
+                    {% empty %}
+                        昨日无热门文章
+                    {% endfor %}
+                </ul>
+        </div>
+
+        <div class="hot_blog">
+                <h3>七天热门点击</h3>
+                <ul>
+                    {% for hot_blog in sevendays_hot_read_data %}
+{#                       注意： 这里的hot_blog.pk hot_blog.read_num_sum 取的都是分组聚合里面的#}
+                        <li><a href="{% url 'blog_detail' hot_blog.pk %}">{{ hot_blog.tittle }}(昨日阅读量：{{ hot_blog.read_num_sum }})</a></li>
+                    {% empty %}
+                        近七天暂无热门文章
+                    {% endfor %}
+                </ul>
+        </div>
+
         <div id="container" ></div>
          <script>
         // 图表配置
@@ -25,11 +59,14 @@
                     type: 'line'                          //指定图表的类型，默认是折线图（line）
                 },
                 title: {
-                    text: '近七天阅读曲线'                 // 标题
+                        text: null                 // 标题
                 },
                 xAxis: {
                     categories: {{ dates|safe }},   // x 轴分类
                     tickmarkPlacement:'on',
+                    title: {
+                        text: '近七天阅读曲线'                 // 标题
+                    },
                 },
                 yAxis: {
                     title: {
