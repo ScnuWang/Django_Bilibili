@@ -3,3 +3,4 @@ django-ckeditor==5.5.0
 django-js-asset==1.1.0
 Pillow==5.1.0
 pytz==2018.4
+django-ckeditor-enhanced==1.4

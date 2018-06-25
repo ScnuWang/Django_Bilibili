@@ -25,7 +25,7 @@ SECRET_KEY = '7lzpt2**@x69(x=li8q74ev5ot%y+lhsn+9axz0!qbb%i_x-^9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['morem.pythonanywhere.com']
+ALLOWED_HOSTS = ['morem.pythonanywhere.com','127.0.0.1','localhost']
 
 
 # Application definition
@@ -128,7 +128,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # 用于为了部署搜集静态文件 python manage.py collectstatic
-STATIC_ROOT = os.path.join(BASE_DIR,'static')
+# STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 # 静态文件目录路径
 STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'),]
@@ -146,4 +146,13 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'my_cache_table',
     }
+}
+# Ckeditor 功能增强配置，包含代码块
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'toolbar_Full',
+        'height': 500,
+        'width': '100%',
+        "extraPlugins" : 'codesnippet',
+    },
 }
