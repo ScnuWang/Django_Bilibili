@@ -1,0 +1,20 @@
+{# 继承base.html 模板 #}
+{% extends 'base.html' %}
+{# 加载 静态文件#}
+{% load staticfiles %}
+{# 页面标题 #}
+{% block tittle %}
+    错误页面
+{% endblock %}
+{# css 文件#}
+{% block head_extand %}
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+{% endblock %}
+{# 设置导航栏激活效果 #}
+{% block nav_home_active %}active{% endblock %}
+{# 页面内容 #}
+{% block content %}
+    {{ message }}
+    <a href="{{ redirect_to }}">返回之前页面</a>
+{% endblock %}

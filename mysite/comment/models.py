@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -12,4 +11,7 @@ class Comment(models.Model):
 
     comment_user = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     comment_content = models.TextField()
-    comment_datatime = models.DateTimeField(timezone.now())
+    comment_datatime = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-comment_datatime']

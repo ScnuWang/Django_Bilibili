@@ -47,7 +47,7 @@ def get_seven_read_data(content_type):
 
     return read_nums,dates
 ```
-
+django.contrib.auth.context_processors.auth默认配置在settings文件中，这个方法会返回user,故可以通过request.user获取
 
 阅读次数统计方案：
 1. 根据request来统计，每次请求，阅读次数加1,统计数字不准确，例如F5刷新也算一次

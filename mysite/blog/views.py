@@ -1,10 +1,13 @@
-from django.shortcuts import render,render_to_response,get_object_or_404,get_list_or_404
-from .models import Blog,BlogType
+from django.shortcuts import render,get_object_or_404,render_to_response
 from django.core.paginator import Paginator
 from django.db.models import Count
-from read_statistics.models import ReadNum,ReadDetail
 from django.contrib.contenttypes.models import ContentType
+
 from django.utils import timezone
+from read_statistics.models import ReadNum,ReadDetail
+from comment.models import Comment
+from .models import Blog,BlogType
+
 # 也可以在settings.py文件里面配置
 each_page_blogs_num = 2
 
@@ -64,7 +67,7 @@ def blog_list_common_util(request,blog_list):
 def blog_list(request):
     blog_all_list = Blog.objects.all()
     context = blog_list_common_util(request,blog_all_list)
-    return render_to_response("blog/blog_list.html",context)
+    return render(request,"blog/blog_list.html",context)
 
 
 def blog_detail(request,blog_pk):
@@ -87,8 +90,8 @@ def blog_detail(request,blog_pk):
         # readnum.save()
 
     # 使用ContentType
+    ct = ContentType.objects.get_for_model(Blog)
     if not request.COOKIES.get('blog_%s_read' % blog_pk):
-        ct = ContentType.objects.get_for_model(Blog)
         # if ReadNum.objects.filter(content_type=ct, object_id=blog.pk).count():
         #     readnum = ReadNum.objects.get(content_type=ct, object_id=blog.pk)
         # else:
@@ -109,6 +112,10 @@ def blog_detail(request,blog_pk):
         readDetail.read_num += 1
         readDetail.save()
 
+    # 处理博客评论列表
+    comment_list = Comment.objects.filter(content_type=ct, object_id=blog.pk)
+
+
 
     # 当前博客的时间
     current_blog_create_time = blog.created_time
@@ -121,8 +128,9 @@ def blog_detail(request,blog_pk):
     context['previous_blog'] = previous_blog
     context['next_blog'] = next_blog
     context['blog'] = blog
+    context['comment_list'] = comment_list
     # 设置Cookie 用于统计阅读次数
-    response = render_to_response("blog/blog_detail.html",context)
+    response = render(request,"blog/blog_detail.html",context)
     response.set_cookie('blog_%s_read' % blog_pk,'True')
     return response
 
@@ -134,11 +142,11 @@ def blog_with_type(request,blog_type_pk):
     blog_all_list = Blog.objects.filter(blogtype=blogtype)
     context = blog_list_common_util(request,blog_all_list)
     context['blogtype'] = blogtype
-    return  render_to_response("blog/blog_with_type.html",context)
+    return  render(request,"blog/blog_with_type.html",context)
 
 # 根据时间获取博客列表
 def blog_with_date(request,year,month):
     blog_list_with_date = Blog.objects.filter(created_time__year=year,created_time__month=month)
     context = blog_list_common_util(request, blog_list_with_date)
     context['blog_with_date'] = "%s年 %s月" % (year,month)
-    return render_to_response("blog/blog_with_date.html", context)
+    return render(request,"blog/blog_with_date.html", context)

@@ -33,3 +33,11 @@ div.blog-content{
 div.blog-more{
     margin-top: 1em;
 }
+
+div.comment-area{
+    margin-top: 2em;
+}
+h3.comment-title{
+    padding-bottom: 0.5em;
+    border-bottom: 1px solid;
+}
