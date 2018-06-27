@@ -1,0 +1,42 @@
+{# 继承base.html 模板 #}
+{% extends 'base.html' %}
+{# 加载 静态文件#}
+{% load staticfiles %}
+{# 页面标题 #}
+{% block tittle %}
+    注册
+{% endblock %}
+{# css 文件#}
+{% block head_extand %}
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+{% endblock %}
+{# 设置导航栏激活效果 #}
+{% block nav_home_active %}active{% endblock %}
+{# 页面内容 #}
+{% block content %}
+{#        action的值如果不写或者写成#号，表示是提交到当前方法#}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-5 col-xs-offset-3">
+                <div class="panel panel-primary">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">注册</h3>
+                  </div>
+                  <div class="panel-body">
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {% for field in regist_form %}
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            <p class="text-danger">{{ field.errors.as_text }}</p>
+                        {% endfor %}
+                          <span class="pull-left text-danger" >{{ regist_form.non_field_errors }}</span>
+                          <button type="submit" class="btn btn-primary pull-right">登录</button>
+                     </form>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

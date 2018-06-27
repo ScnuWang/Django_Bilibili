@@ -2,13 +2,14 @@ import datetime
 from django.shortcuts import render,redirect
 from django. contrib.contenttypes.models import ContentType
 from django.contrib import auth
+from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db.models import Sum
 from django.core.cache import cache
 from django.urls import reverse
 from blog.models import Blog
 from read_statistics.utils import get_seven_read_data,get_today_hot_read_data,get_yestoday_hot_read_data
-from .forms import LoginForm
+from .forms import LoginForm,RegistForm
 # 利用ContentType的反向关系
 def get_sevendays_hot_read_data():
     today = timezone.now().date()
@@ -56,7 +57,7 @@ def login(request):
     # POST :提交数据(登录操作)，其他：加载登录页面
     if request.method == 'POST':
         login_form = LoginForm(request.POST)
-        referer = request.META.get('HTTP_REFERER', reverse('home'))
+        # referer = request.META.get('HTTP_REFERER', reverse('home'))
         # 校验字段通过
         # if login_form.is_valid():
             # 如果字段校验通过，执行授权验证操作
@@ -94,3 +95,23 @@ def login(request):
     context = {}
     context['login_form'] = login_form
     return render(request, 'login.html', context)
+
+def regist(request):
+    if request.method == 'POST':
+        regist_form = RegistForm(request.POST)
+        if regist_form.is_valid():
+            username = regist_form.cleaned_data['username']
+            password = regist_form.cleaned_data['password']
+            eamil = regist_form.cleaned_data['email']
+            # 创建用户
+            user = User.objects.create_user(username,eamil,password)
+            user.save()
+            # 注册成功后登录
+            # user = auth.authenticate(username=username, password=password)
+            auth.login(request,user)
+            return redirect(request.GET.get('from'), reverse('home'))
+    else:
+        regist_form = RegistForm()
+    context = {}
+    context['regist_form'] = regist_form
+    return render(request, 'regist.html', context)
