@@ -8,7 +8,7 @@ from django.core.cache import cache
 from django.urls import reverse
 from blog.models import Blog
 from read_statistics.utils import get_seven_read_data,get_today_hot_read_data,get_yestoday_hot_read_data
-
+from .forms import LoginForm
 # 利用ContentType的反向关系
 def get_sevendays_hot_read_data():
     today = timezone.now().date()
@@ -41,14 +41,56 @@ def home(request):
     return render(request,"home.html", context)
 
 def login(request):
+    '''
     username = request.POST['username']
     password = request.POST['password']
     user = auth.authenticate(request, username=username, password=password)
     referer = request.META.get('HTTP_REFERER',reverse('home'))
     if user is not None:
         auth.login(request, user)
-        # Redirect to a success page.
         return redirect(referer)
     else:
-        # Return an 'invalid login' error message.
         return render(request,'error.html',{'message':'用户名或者密码错误！！！'})
+    '''
+    # 使用Django.form
+    # POST :提交数据(登录操作)，其他：加载登录页面
+    if request.method == 'POST':
+        login_form = LoginForm(request.POST)
+        referer = request.META.get('HTTP_REFERER', reverse('home'))
+        # 校验字段通过
+        # if login_form.is_valid():
+            # 如果字段校验通过，执行授权验证操作
+            # username = login_form.cleaned_data['username']
+            # password = login_form.cleaned_data['password']
+            # user = auth.authenticate(request, username=username, password=password)
+            # 授权通过
+            # if login_form.cleaned_data['user'] is not None:
+            #     auth.login(request, user)
+                # 由于又多了一个页面，所以不能直接使用referer
+                # return redirect(request.GET.get('from'),reverse('home'))
+            # 授权未通过:提示返回的错误信息
+            # else:
+            #     login_form.add_error(None,'用户名或密码不正确!!!')
+                # context = {}
+                # context['login_form'] = login_form
+                # return render(request, 'login.html', context)
+
+        # ---> 转移到form里面去验证
+        if login_form.is_valid():
+            auth.login(request, login_form.cleaned_data['user'])
+            return redirect(request.GET.get('from'), reverse('home'))
+
+        # 校验字段未通过,
+        # else:
+        #     context = {}
+        #     context['login_form'] = login_form
+        #     return render(request, 'login.html', context)
+    # 加载登录页面
+    else:
+        login_form = LoginForm()
+        # context = {}
+        # context['login_form'] = login_form
+        # return render(request, 'login.html', context)
+    context = {}
+    context['login_form'] = login_form
+    return render(request, 'login.html', context)
