@@ -47,6 +47,15 @@ def get_seven_read_data(content_type):
 
     return read_nums,dates
 ```
+
+```python
+# 校验用户是否登录，通过这种方式传递user
+    def __init__(self,*args,**kwargs):
+        if 'user' in kwargs:
+            self.user = kwargs.pop('user')
+        super(CommentForm,self).__init__(*args,**kwargs)
+```
+
 django.contrib.auth.context_processors.auth默认配置在settings文件中，这个方法会返回user,故可以通过request.user获取
 
 action的值如果不写或者写成#号，表示是提交到当前方法
@@ -60,3 +69,5 @@ action的值如果不写或者写成#号，表示是提交到当前方法
 
 list(filter(lambda x:  'Input' in x,dir(forms)))
 过滤器(filter),取出每一个（lambda x）, 从集合里面取（dir(forms)）,对每一个做出操作（判断是否包含'Input'）
+
+如果不确定是否包含这个键值对，就不要直接用['key']来取值，用get('key'),这样的话如果为空呢，会返回None

@@ -3,6 +3,8 @@
 {% load staticfiles %}
 {% block head_extand %}
     <link rel="stylesheet" href="{% static 'blog.css' %}">
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 {% endblock %}
 {# 页面标题 #}
 {% block tittle %}
@@ -47,10 +49,8 @@
                        {{ user.username }} ,欢迎评论 -
                         <form action="{% url 'update_comment' %}" method="post">
                             {% csrf_token %}
-                            <textarea  name="comment_content" class="form-control" rows="4"></textarea>
-                            <input type="hidden" name="object_id" value="{{ blog.pk }}">
-                            <input type="hidden" name="content_type" value="blog">
-                            <button type="submit" class="btn btn-default">评论</button>
+                            {{ comment_form }}
+                            <button type="submit" class="btn btn-primary pull-right">评论</button>
                         </form>
                     {% else %}
                         <span >未登录,登录之后方可评论-

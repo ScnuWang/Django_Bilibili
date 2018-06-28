@@ -41,3 +41,8 @@ h3.comment-title{
     padding-bottom: 0.5em;
     border-bottom: 1px solid;
 }
+
+div.django-ckeditor-widget{
+    width: 100%;
+    margin-top: 1em;
+}

@@ -7,7 +7,7 @@ from django.utils import timezone
 from read_statistics.models import ReadNum,ReadDetail
 from comment.models import Comment
 from .models import Blog,BlogType
-
+from comment.forms import CommentForm
 # 也可以在settings.py文件里面配置
 each_page_blogs_num = 2
 
@@ -90,7 +90,7 @@ def blog_detail(request,blog_pk):
         # readnum.save()
 
     # 使用ContentType
-    ct = ContentType.objects.get_for_model(Blog)
+    blog_content_type = ContentType.objects.get_for_model(Blog)
     if not request.COOKIES.get('blog_%s_read' % blog_pk):
         # if ReadNum.objects.filter(content_type=ct, object_id=blog.pk).count():
         #     readnum = ReadNum.objects.get(content_type=ct, object_id=blog.pk)
@@ -98,7 +98,7 @@ def blog_detail(request,blog_pk):
         #     readnum = ReadNum(content_type=ct, object_id=blog.pk)
 
         # 用下面这个替代上面的
-        readnum, created = ReadNum.objects.get_or_create(content_type=ct, object_id=blog.pk)
+        readnum, created = ReadNum.objects.get_or_create(content_type=blog_content_type, object_id=blog.pk)
         readnum.read_num += 1
         readnum.save()
 
@@ -108,12 +108,12 @@ def blog_detail(request,blog_pk):
         # else:
         #     readDetail = ReadDetail(content_type=ct, object_id=blog.pk, date= date)
 
-        readDetail, created = ReadDetail.objects.get_or_create(content_type=ct, object_id=blog.pk, date= date)
+        readDetail, created = ReadDetail.objects.get_or_create(content_type=blog_content_type, object_id=blog.pk, date= date)
         readDetail.read_num += 1
         readDetail.save()
 
     # 处理博客评论列表
-    comment_list = Comment.objects.filter(content_type=ct, object_id=blog.pk)
+    comment_list = Comment.objects.filter(content_type=blog_content_type, object_id=blog.pk)
 
 
 
@@ -129,6 +129,9 @@ def blog_detail(request,blog_pk):
     context['next_blog'] = next_blog
     context['blog'] = blog
     context['comment_list'] = comment_list
+    # 评论框使用DjangoForm
+    context['comment_form'] = CommentForm(initial={'content_type':blog_content_type,'object_id':blog_pk})
+
     # 设置Cookie 用于统计阅读次数
     response = render(request,"blog/blog_detail.html",context)
     response.set_cookie('blog_%s_read' % blog_pk,'True')

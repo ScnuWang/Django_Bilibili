@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from read_statistics.models import ReadNum
 from ckeditor_uploader.fields import RichTextUploadingField
-# Create your models here.
 from django.db.models.fields import exceptions
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation
