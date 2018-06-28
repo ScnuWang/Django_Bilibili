@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404,render_to_response
+from django.shortcuts import render,get_object_or_404
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType

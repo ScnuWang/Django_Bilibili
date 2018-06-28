@@ -71,3 +71,5 @@ list(filter(lambda x:  'Input' in x,dir(forms)))
 过滤器(filter),取出每一个（lambda x）, 从集合里面取（dir(forms)）,对每一个做出操作（判断是否包含'Input'）
 
 如果不确定是否包含这个键值对，就不要直接用['key']来取值，用get('key'),这样的话如果为空呢，会返回None
+
+在blog_detail.html总添加代码块，需要先在base.html上面添加，不然不会被渲染

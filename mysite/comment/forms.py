@@ -6,7 +6,7 @@ from ckeditor.widgets import CKEditorWidget
 class CommentForm(forms.Form):
     object_id = forms.IntegerField(widget=forms.HiddenInput)
     content_type = forms.CharField(widget=forms.HiddenInput)
-    comment_content = forms.CharField(label='',widget=CKEditorWidget(config_name='comment_ckeditor'))
+    comment_content = forms.CharField(label='',widget=CKEditorWidget(config_name='comment_ckeditor'),error_messages={'required':'评论内容不能为空'})
 
     # 校验用户是否登录，通过这种方式传递user
     def __init__(self,*args,**kwargs):
