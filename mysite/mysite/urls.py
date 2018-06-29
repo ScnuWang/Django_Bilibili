@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 # 同一个目录，引用用.代替
-from . import views
 from .views import home,login,regist
 # 2.x 使用的path,正则表达式使用re_path;
 # 1.x 使用的版本是url，

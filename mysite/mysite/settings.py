@@ -128,7 +128,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# 用于为了部署搜集静态文件 python manage.py collectstatic
+# 用于为了部署搜集静态文件
 # STATIC_ROOT = os.path.join(BASE_DIR,'static')
 
 # 静态文件目录路径

@@ -2,12 +2,11 @@ from django.shortcuts import render,get_object_or_404
 from django.core.paginator import Paginator
 from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
-
 from django.utils import timezone
 from read_statistics.models import ReadNum,ReadDetail
 from comment.models import Comment
-from .models import Blog,BlogType
 from comment.forms import CommentForm
+from .models import Blog,BlogType
 # 也可以在settings.py文件里面配置
 each_page_blogs_num = 2
 

@@ -6,6 +6,7 @@ from django.db.models.fields import exceptions
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation
 from read_statistics.models import ReadDetail
+
 # 可以在shell模式下通过blogtype对象的blog_set获取blog对象列表
 class BlogType(models.Model):
     typename = models.CharField(max_length=15)
@@ -25,6 +26,7 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.tittle
+
     def get_read_num(self):
         try:
             ct = ContentType.objects.get_for_model(Blog)
